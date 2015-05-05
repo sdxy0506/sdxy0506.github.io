@@ -5,18 +5,15 @@
   
   <title>Java线程冲突问题--不安全的线程例子 | 一个小android开发的心得整理</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
-线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
+  <meta name="description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java线程冲突问题--不安全的线程例子">
 <meta property="og:url" content="/2013/09/26/Java线程冲突问题-不安全的线程例子/index.html">
 <meta property="og:site_name" content="一个小android开发的心得整理">
-<meta property="og:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
-线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
+<meta property="og:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程冲突问题--不安全的线程例子">
-<meta name="twitter:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
-线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
+<meta name="twitter:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。">
   
     <link rel="alternative" href="/atom.xml" title="一个小android开发的心得整理" type="application/atom+xml">
   
@@ -201,6 +198,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Java线程安全问题">Java线程安全问题</h1><p>在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  </p>
+<a id="more"></a>
 <h2 id="线程冲突">线程冲突</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserStat</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> userCount;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getUserCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userCount;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		userCount++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decrement</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		userCount--;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>假设当一个线程正在递增<strong>userCount</strong>变量时，另一个线程则试图通过调用<strong>getUserCount</strong>来读取该变量的值，这时会发生什么情况呢？请记住，<strong>userCount++</strong>语句实际上是由3个连续的步骤组成的：  </p>
 <ul>
