@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>一个小android开发的心得整理</title>
+  <title>Java线程冲突问题--不安全的线程例子 | 一个小android开发的心得整理</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="学习总结 思考感悟 知识管理 心得散文#网站描述">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一个小android开发的心得整理">
-<meta property="og:url" content="/archives/index.html">
+  <meta name="description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
+线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java线程冲突问题--不安全的线程例子">
+<meta property="og:url" content="/2013/09/26/Java线程冲突问题-不安全的线程例子/index.html">
 <meta property="og:site_name" content="一个小android开发的心得整理">
-<meta property="og:description" content="学习总结 思考感悟 知识管理 心得散文#网站描述">
+<meta property="og:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
+线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个小android开发的心得整理">
-<meta name="twitter:description" content="学习总结 思考感悟 知识管理 心得散文#网站描述">
+<meta name="twitter:title" content="Java线程冲突问题--不安全的线程例子">
+<meta name="twitter:description" content="Java线程安全问题在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  
+线程冲突123456789101112public class UserStat &amp;#123;	int userCount;	public int getUserCount() &amp;#123;		return user">
   
     <link rel="alternative" href="/atom.xml" title="一个小android开发的心得整理" type="application/atom+xml">
   
@@ -156,68 +159,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-android-studio-mac-快捷键-总结-不断更新" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/03/06/android-studio-mac-快捷键-总结-不断更新/" class="article-date">
-  	<time datetime="2015-03-06T06:22:42.000Z" itemprop="datePublished">2015-03-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/03/06/android-studio-mac-快捷键-总结-不断更新/">android studio mac 快捷键 总结 (不断更新)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近公司的项目都已经迁移到了Android Studio上面进行开发，刚转过来各种不适应，甚至连快捷键都不知道，现在用得顺手一些了，总结一下开发中用到的快捷键，以后会根据新用到的快捷键进行更新~</p>
-        <hr/>
-        <p class="article-more-link">
-          <a  href="/2015/03/06/android-studio-mac-快捷键-总结-不断更新/#more">more >></a>
-        </p>
-      
-    </div>
-    
-    <div class="article-info">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-studio/">android studio</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/快捷键/">快捷键</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/android/">android</a>
-	</div>
-
-
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-Java线程冲突问题-不安全的线程例子" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Java线程冲突问题-不安全的线程例子" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2013/09/26/Java线程冲突问题-不安全的线程例子/" class="article-date">
@@ -233,12 +175,27 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2013/09/26/Java线程冲突问题-不安全的线程例子/">Java线程冲突问题--不安全的线程例子</a>
+    <h1 class="article-title" itemprop="name">
+      Java线程冲突问题--不安全的线程例子
     </h1>
   
 
       </header>
+      
+      <div class="article-info">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程/">线程</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/java/">java</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -269,41 +226,53 @@
 <p>注：synchronized 方法控制对类成员变量的访问： 每个类实例对应一把锁，每个 synchronized 方法都必须获得调用该方法的类实例的锁方能执行，否则所属 线程阻塞 ，方法一旦执行，就独占该锁，直到从该方法返回时才将锁释放，此后被阻塞的线程方能获得该锁，重新进入可 执行状态。这种机制确保了同一时刻对于每一个类实例，其所有声明为 synchronized 的成员函数中至多只有一个处于可执行状态（因为至多只有一个能够获得该类实例对应的锁），从而有效避免了类成员变量的访问冲突（只要所有可能访问类成员变量的方法均被声明为 synchronized）。</p>
 
         
-          <!-- show an end symbol if the article is fully displayed -->
-          <hr/>
-          <p class="article-more-link">
-            <a>end</a>
-          </p>
-        
       
-    </div>
-    
-    <div class="article-info">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程/">线程</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/java/">java</a>
-	</div>
-
-
-      <div class="clearfix"></div>
     </div>
     
   </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/06/android-studio-mac-快捷键-总结-不断更新/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          android studio mac 快捷键 总结 (不断更新)
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
   
 </article>
 
 
 
 
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="Java线程冲突问题-不安全的线程例子" data-title="Java线程冲突问题--不安全的线程例子" data-url="/2013/09/26/Java线程冲突问题-不安全的线程例子/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
-  
-  
+
 </div>
       <footer id="footer">
 <script src="//dn-lbstatics.qbox.me/lbservice/busuanzi/2.0/busuanzi.mini.js"/></script>
