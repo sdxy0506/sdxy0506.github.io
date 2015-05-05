@@ -100,7 +100,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/java/" style="font-size: NaNpx;">java</a><a href="/tags/线程/" style="font-size: NaNpx;">线程</a>
 					</div>
 				</section>
 				
@@ -157,6 +157,91 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Java线程冲突问题-不安全的线程例子" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/05/Java线程冲突问题-不安全的线程例子/" class="article-date">
+  	<time datetime="2015-05-05T08:04:31.000Z" itemprop="datePublished">2015-05-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/05/Java线程冲突问题-不安全的线程例子/">Java线程冲突问题--不安全的线程例子</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java线程安全问题">Java线程安全问题</h1><p>在平时编程中，我们会经常用到多线程，尤其是android中，但多线程也特别容易带来问题，比如线程冲突、死锁等问题，为了加深理解，我们先来回顾一下线程冲突问题。  </p>
+<h2 id="线程冲突">线程冲突</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserStat</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> userCount;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getUserCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userCount;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		userCount++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">decrement</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		userCount--;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设当一个线程正在递增<strong>userCount</strong>变量时，另一个线程则试图通过调用<strong>getUserCount</strong>来读取该变量的值，这时会发生什么情况呢？请记住，<strong>userCount++</strong>语句实际上是由3个连续的步骤组成的：  </p>
+<ul>
+<li>读取<strong>userCount</strong>的值，并将它保存在某个临时储存装置中  </li>
+<li>递增这个值  </li>
+<li>降递增的值写回到<strong>userCount</strong>中</li>
+</ul>
+<p>假设有一个线程负责读取和递增<strong>userCount</strong>的值。在它有机会存储递增的值之前，另一个线程会读取它，并且得到的是旧值。当第二个线程最终得到机会写入<strong>userCount</strong>时，它会替换掉第一个线程的递增值。两个非原子的操作在不同的线程中运行，却操作同一个数据，其中的交叉就称作线程冲突。</p>
+<h2 id="不安全的线程例子">不安全的线程例子</h2><p>下面我们从一个不安全的例子开始，分析一下线程冲突。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnSafeThreadDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UnSafeThreadDemo</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="javadoc">/**</span><br><span class="line">	 *<span class="javadoctag"> @author</span> xuyan</span><br><span class="line">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> UserStat us = <span class="keyword">new</span> UnSafeThreadDemo().new UserStat();</span><br><span class="line">		Thread th1 = <span class="keyword">new</span> Thread(<span class="string">"th1"</span>) &#123;</span><br><span class="line">			<span class="annotation">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				System.out.println(us.getUserCount() + <span class="string">" "</span> + <span class="keyword">super</span>.getName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		Thread th2 = <span class="keyword">new</span> Thread(<span class="string">"th2"</span>) &#123;</span><br><span class="line">			<span class="annotation">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				System.out.println(us.getUserCount() + <span class="string">" "</span> + <span class="keyword">super</span>.getName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		th1.start();</span><br><span class="line">		<span class="comment">// Thread.sleep(100);</span></span><br><span class="line">		th2.start();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">UserStat</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> userCount;</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getUserCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> userCount++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>如果不执行Thread.sleep(1000);  </li>
+<li>偶尔结果为：  </li>
+<li>0 th2  </li>
+<li>0 th1  </li>
+<li>如果执行Thread.sleep(1000);  </li>
+<li>结果为：  </li>
+<li>0 th1  </li>
+<li>1 th2  </li>
+</ul>
+<p>对于这样的多线程冲突问题，我们采用一种常规的解决方法，就是同步机制。让我们对操作加synchronized关键字：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserStat</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> userCount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">getUserCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> userCount++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注：synchronized 方法控制对类成员变量的访问： 每个类实例对应一把锁，每个 synchronized 方法都必须获得调用该方法的类实例的锁方能执行，否则所属 线程阻塞 ，方法一旦执行，就独占该锁，直到从该方法返回时才将锁释放，此后被阻塞的线程方能获得该锁，重新进入可 执行状态。这种机制确保了同一时刻对于每一个类实例，其所有声明为 synchronized 的成员函数中至多只有一个处于可执行状态（因为至多只有一个能够获得该类实例对应的锁），从而有效避免了类成员变量的访问冲突（只要所有可能访问类成员变量的方法均被声明为 synchronized）。</p>
+
+        
+          <!-- show an end symbol if the article is fully displayed -->
+          <hr/>
+          <p class="article-more-link">
+            <a>end</a>
+          </p>
+        
+      
+    </div>
+    
+    <div class="article-info">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程/">线程</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/java/">java</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
   
     <article id="post-android-studio-mac-快捷键-总结-不断更新" class="article article-type-post" itemscope itemprop="blogPost">
   
